@@ -27,12 +27,12 @@ class Chef
     default_action :create
 
     attribute :enabled, :kind_of => [TrueClass, FalseClass], :default => true
-    attribute :config_path, :kind_of => String, :default => self.lazy { default_config_path }
     attribute :plugin_name, :kind_of => String, :name_attribute => true
     attribute :source, :kind_of => String, :default => 'plugin.erb'
 
-    def default_config_path
-      ::File.join(run_context.yum.main.pluginconfpath, "#{plugin_name}.conf")
+    def config_path(arg=nil)
+      arg ||= ::File.join(run_context.yum.main.pluginconfpath, "#{plugin_name}.conf")
+      set_or_return(:config_path, arg, :kind_of => String)
     end
   end
 
